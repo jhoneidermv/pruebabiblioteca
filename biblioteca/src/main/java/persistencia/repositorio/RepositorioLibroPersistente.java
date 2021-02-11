@@ -43,5 +43,4 @@ public class RepositorioLibroPersistente implements RepositorioLibro, Repositori
 
 		return (LibroEntity) query.getSingleResult();
 	}
-
 }

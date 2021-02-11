@@ -1,10 +1,14 @@
 package dominio.unitaria;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+
+import org.junit.Before;
 import org.junit.Test;
 
 import dominio.Bibliotecario;
@@ -14,6 +18,16 @@ import dominio.repositorio.RepositorioPrestamo;
 import testdatabuilder.LibroTestDataBuilder;
 
 public class BibliotecarioTest {
+	RepositorioPrestamo repositorioPrestamo;
+	RepositorioLibro repositorioLibro;
+	Bibliotecario bibliotecario;
+	
+	@Before
+	public void setBibliotecario() {
+		repositorioPrestamo = mock(RepositorioPrestamo.class);
+		repositorioLibro = mock(RepositorioLibro.class);
+		bibliotecario = new Bibliotecario(repositorioLibro, repositorioPrestamo);
+	}
 
 	@Test
 	public void esPrestadoTest() {
@@ -23,12 +37,8 @@ public class BibliotecarioTest {
 		
 		Libro libro = libroTestDataBuilder.build(); 
 		
-		RepositorioPrestamo repositorioPrestamo = mock(RepositorioPrestamo.class);
-		RepositorioLibro repositorioLibro = mock(RepositorioLibro.class);
-		
 		when(repositorioPrestamo.obtenerLibroPrestadoPorIsbn(libro.getIsbn())).thenReturn(libro);
 		
-		Bibliotecario bibliotecario = new Bibliotecario(repositorioLibro, repositorioPrestamo);
 		
 		// act 
 		boolean esPrestado =  bibliotecario.esPrestado(libro.getIsbn());
@@ -45,17 +55,53 @@ public class BibliotecarioTest {
 		
 		Libro libro = libroTestDataBuilder.build(); 
 		
-		RepositorioPrestamo repositorioPrestamo = mock(RepositorioPrestamo.class);
-		RepositorioLibro repositorioLibro = mock(RepositorioLibro.class);
-		
 		when(repositorioPrestamo.obtenerLibroPrestadoPorIsbn(libro.getIsbn())).thenReturn(null);
-		
-		Bibliotecario bibliotecario = new Bibliotecario(repositorioLibro, repositorioPrestamo);
 		
 		// act 
 		boolean esPrestado =  bibliotecario.esPrestado(libro.getIsbn());
 		
 		//assert
 		assertFalse(esPrestado);
+	}
+	
+	@Test
+	public void fechaDeEntregaTest() {
+		// Arrange
+		Calendar fecha = new GregorianCalendar(2017, Calendar.MAY, 24);
+		
+		// act
+		Date nuevaFecha = bibliotecario.fechaDeEntrega(fecha.getTime());
+		Calendar fechaObtenida = new GregorianCalendar();
+		fechaObtenida.setTime(nuevaFecha);
+
+		// assert
+		assertEquals(9, fechaObtenida.get(Calendar.DAY_OF_MONTH));
+		assertEquals(Calendar.JUNE, fechaObtenida.get(Calendar.MONTH));
+		assertEquals(2017, fechaObtenida.get(Calendar.YEAR));
+	}
+	
+	@Test
+	public void isbnEsPalindromoTest() {
+		//Arrange
+		String isbn = "as88sa";
+		
+		// act
+		boolean esPalindromo = bibliotecario.esPalindromo(isbn);
+		
+		//assert
+		assertTrue(esPalindromo);
+	}
+	
+	@Test
+	public void sumaDigitosIsbnMayorATreintaTest() {
+		//Arrange
+		String isbn = "9f9a87f";
+		
+		// act
+		boolean sumaDigitos = bibliotecario.digitosMayorATreinta(isbn);
+		
+		// assert
+		assertTrue(sumaDigitos);
+		
 	}
 }

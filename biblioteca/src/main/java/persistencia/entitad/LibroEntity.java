@@ -23,9 +23,6 @@ public class LibroEntity {
 
 	@Column(nullable = false)
 	private Integer anio;
-	
-	@Column(nullable = false)
-	private boolean estadoPrestamo;
 
 	public Long getId() {
 		return id;
@@ -57,13 +54,5 @@ public class LibroEntity {
 
 	public Integer getAnio() {
 		return anio;
-	}
-
-	public boolean isEstadoPrestamo() {
-		return estadoPrestamo;
-	}
-
-	public void setEstadoPrestamo(boolean estadoPrestamo) {
-		this.estadoPrestamo = estadoPrestamo;
 	}
 }
