@@ -80,28 +80,5 @@ public class BibliotecarioTest {
 		assertEquals(2017, fechaObtenida.get(Calendar.YEAR));
 	}
 	
-	@Test
-	public void isbnEsPalindromoTest() {
-		//Arrange
-		String isbn = "as88sa";
-		
-		// act
-		boolean esPalindromo = bibliotecario.esPalindromo(isbn);
-		
-		//assert
-		assertTrue(esPalindromo);
-	}
 	
-	@Test
-	public void sumaDigitosIsbnMayorATreintaTest() {
-		//Arrange
-		String isbn = "9f9a87f";
-		
-		// act
-		boolean sumaDigitos = bibliotecario.digitosMayorATreinta(isbn);
-		
-		// assert
-		assertTrue(sumaDigitos);
-		
-	}
 }
